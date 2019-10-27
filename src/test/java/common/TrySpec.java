@@ -17,7 +17,9 @@ class TrySpec {
             throw new RuntimeException("boom!");
         });
         assertFalse(result.isSuccess());
-        result.onSuccess(res -> fail("operation should not have succeeded"));
+        result
+            .onFailure(e -> e.getMessage().equals("boom!"))
+            .onSuccess(res -> fail("operation should not have succeeded"));
     }
 
     @Test

@@ -41,8 +41,6 @@ class AppIntegrationTest {
 
     @AfterEach
     void verify() {
-        outputBuffer.getLines().forEach(line ->
-                System.out.println("expectedOutput.add(\""+line+"\");"));
         assertEquals(expectedOutput, outputBuffer.getLines());
     }
 
@@ -70,7 +68,10 @@ class AppIntegrationTest {
         expectedOutput.add("Enter command ('?' for help): Enter Person (firstname, surname): " +
                 ""+red+"Person 'abcde' does not exist"+reset);
         expectedOutput.add("Enter command ('?' for help): Enter Person Id: deleted Person 10134");
+        expectedOutput.add("Enter command ('?' for help): Enter Person Id: "+red+"invalid Person id: ABCDE"+reset);
         expectedOutput.add("Enter command ('?' for help): Enter path to Person XML file: loaded 2 Person records of 2");
+        expectedOutput.add("Enter command ('?' for help): Enter path to Person XML file: "
+                +red+"failed to load Person records from 'no.such.file': Failed to read XML manifest file: no.such.file"+reset);
         expectedOutput.add("Enter command ('?' for help): Joe, Schmo (ID=123456)");
         expectedOutput.add("Susan, Schwachsin (ID=123460)");
         expectedOutput.add("Enter command ('?' for help): ");

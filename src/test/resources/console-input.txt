@@ -16,6 +16,10 @@ edit
 abcde
 delete
 10134
+delete
+ABCDE
 upload
 src/test/resources/test-users.xml
+upload
+no.such.file
 list
