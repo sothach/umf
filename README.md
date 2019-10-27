@@ -1,6 +1,6 @@
 # UMF
 [![Build Status](https://travis-ci.org/sothach/umf.svg?branch=master)](https://travis-ci.org/sothach/umf)
-[![Coverage Status](https://coveralls.io/repos/github/sothach/umf/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/sothach/umf?branch=master&service=githubr&kill_cache=1)
+[![Coverage Status](https://coveralls.io/repos/github/sothach/umf/badge.svg?branch=master&service=github&kill_cache=1)](https://coveralls.io/github/sothach/umf?branch=master&service=github&kill_cache=1)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7fd846368a8e4d539a0154f8ff5a1af4)](https://www.codacy.com/manual/sothach/umf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sothach/umf&amp;utm_campaign=Badge_Grade)
 
 ## Task
