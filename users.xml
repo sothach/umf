@@ -1,0 +1,22 @@
+<users>
+  <user>
+    <id>10001</id>
+    <firstName>Otto</firstName>
+    <surname>Normalverbraucher</surname>
+  </user>
+  <user>
+    <id>10002</id>
+    <firstName>Hans</firstName>
+    <surname>Mustermann</surname>
+  </user>
+  <user>
+    <id>10003</id>
+    <firstName>Joe</firstName>
+    <surname>Schmo</surname>
+  </user>
+  <user>
+    <id>10004</id>
+    <firstName>Ivor</firstName>
+    <surname>Driver</surname>
+  </user>
+</users>

@@ -1,0 +1,16 @@
+language: java
+sudo: false
+
+jdk:
+  - oraclejdk8
+
+install: true
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/jvm'
+    - '$HOME/maven'
+
+after_success:
+  - mvn clean cobertura:cobertura org.eluder.coveralls:coveralls-maven-plugin:4.3.0:report
