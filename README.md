@@ -9,7 +9,7 @@ Provide help
 1.  Add Person (id, firstName, surname)
 2.  Edit Person (firstName, surname)
 3.  Delete Person (id)
-4.  cCount Number of Persons
+4.  Count Number of Persons
 5.  List Persons
 
 Additional Requirements (nice to have, but not required);
