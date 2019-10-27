@@ -1,6 +1,6 @@
 package model;
 
-import org.anized.umf.model.User;
+import org.anized.umf.model.Person;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,24 +14,24 @@ class UserSpec {
     @Test
     @DisplayName("The User builder constructs a valid object")
     void userObjectBuilt() {
-        final User subject = User.builder(expected)
+        final Person subject = Person.builder(expected)
                 .setFirstName("Fred")
                 .setSurname("Flintstone")
                 .setId(BigInteger.ONE)
                 .build();
-        assertEquals("Flintstone, Fred (ID=1)", subject.toString());
-        assertEquals(expected.getSurname(), subject.getSurname());
-        assertEquals(expected.getFirstName(), subject.getFirstName());
+        assertEquals("Fred, Flintstone (ID=1)", subject.toString());
+        assertTrue(expected.getSurname().equalsIgnoreCase(subject.getSurname()));
+        assertTrue(expected.getFirstName().equalsIgnoreCase(subject.getFirstName()));
         assertEquals(expected, subject);
     }
 
     @Test
     @DisplayName("The User creator constructs a valid object")
     void userCreated() {
-        final User subject = User.createUser("1", "Fred","Flintstone");
-        assertEquals("Flintstone, Fred (ID=1)", subject.toString());
-        assertEquals(expected.getSurname(), subject.getSurname());
-        assertEquals(expected.getFirstName(), subject.getFirstName());
+        final Person subject = Person.createPerson("1", "Fred","Flintstone");
+        assertEquals("Fred, Flintstone (ID=1)", subject.toString());
+        assertTrue(expected.getSurname().equalsIgnoreCase(subject.getSurname()));
+        assertTrue(expected.getFirstName().equalsIgnoreCase(subject.getFirstName()));
         assertEquals(expected, subject);
         assertFalse(expected.hashCode() != subject.hashCode());
     }
@@ -39,9 +39,9 @@ class UserSpec {
     @Test
     @DisplayName("An invalid user string is detected")
     void invalidUserString() {
-        final Optional<User> subject = User.apply("Flintstone. Fred");
+        final Optional<Person> subject = Person.apply("Fred, Flintstone");
         assertFalse(subject.isPresent());
     }
 
-    private User expected = User.apply("1, Flintstone, Fred").get();
+    private Person expected = Person.apply("1, Fred, Flintstone").get();
 }

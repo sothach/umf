@@ -1,8 +1,8 @@
 package services;
 
 import org.anized.common.Try;
-import org.anized.umf.model.User;
-import org.anized.umf.services.UserService;
+import org.anized.umf.model.Person;
+import org.anized.umf.services.ManifestService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +16,16 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = { UserService.class})
+@SpringBootTest(classes = { ManifestService.class})
 @AutoConfigureDataMongo
 @EnableAutoConfiguration
 @EnableMongoRepositories("org.anized.umf.persistence")
-class UserServiceIntegrationTest {
+class PersonServiceIntegrationTest {
 
     @Autowired
-    private UserService userService;
+    private ManifestService manifestService;
 
-    private final User user = User.builder()
+    private final Person person = Person.builder()
             .setId(BigInteger.TEN)
             .setFirstName("Fred")
             .setSurname("Feuerstein")
@@ -34,45 +34,45 @@ class UserServiceIntegrationTest {
     @Test
     @DisplayName("A user record can be persisted via the service")
     void testCreate() {
-        userService.create(user);
-        final Optional<User> found = userService.read(user);
+        manifestService.create(person);
+        final Optional<Person> found = manifestService.read(person);
         assertTrue(found.isPresent());
-        found.ifPresent(u -> assertEquals(u, user));
+        found.ifPresent(u -> assertEquals(u, person));
     }
 
     @Test
     @DisplayName("Attempts to create a duplicate user will fail")
     void testCreateDuplicates() {
-        final User testUser = User.builder(user)
+        final Person testPerson = Person.builder(person)
                 .setFirstName("Pebbles").build();
-        userService.create(testUser);
-        final Optional<User> found = userService.read(testUser);
+        manifestService.create(testPerson);
+        final Optional<Person> found = manifestService.read(testPerson);
         assertTrue(found.isPresent());
-        found.ifPresent(u -> assertEquals(u, testUser));
+        found.ifPresent(u -> assertEquals(u, testPerson));
 
-        assertFalse(userService.create(testUser).isSuccess());
+        assertFalse(manifestService.create(testPerson).isSuccess());
     }
 
     @Test
     @DisplayName("A user record can be deleted via the service")
     void testDelete() {
-        final User testUser = User.builder(user)
+        final Person testPerson = Person.builder(person)
                 .setFirstName("Wilma").build();
-        userService.create(testUser);
-        final Optional<User> found = userService.read(testUser);
+        manifestService.create(testPerson);
+        final Optional<Person> found = manifestService.read(testPerson);
         assertTrue(found.isPresent());
         found.ifPresent(u -> {
-            final Try<User> deleted = userService.delete(u.getId());
+            final Try<Person> deleted = manifestService.delete(u.getId());
             assertTrue(deleted.isSuccess());
         });
-        final Optional<User> refind = userService.read(testUser);
+        final Optional<Person> refind = manifestService.read(testPerson);
         assertFalse(refind.isPresent());
     }
 
     @Test
     @DisplayName("All user records can be retrieved")
     void testListAll() {
-        userService.findAll().forEach ( user ->
+        manifestService.findAll().forEach (user ->
                 System.out.println("User: "+ user));
     }
 }

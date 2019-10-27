@@ -1,4 +1,21 @@
 help
 add
 10134, User, Test
+add
+10000, User, Test
+count
+edit
+known, not
+edit
+User, Test
+Changed
+Name
+add
+invalid person
+edit
+abcde
+delete
+10134
+upload
+src/test/resources/test-users.xml
 list

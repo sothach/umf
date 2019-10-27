@@ -8,13 +8,13 @@ import java.math.BigInteger;
 import java.util.Objects;
 import java.util.Optional;
 
-public class User {
+public class Person {
     @Id
     private BigInteger id;
     private String firstName;
     private String surname;
 
-    private User(final BigInteger id, final String firstName, final String surname) {
+    private Person(final BigInteger id, final String firstName, final String surname) {
         this.firstName = firstName;
         this.surname = surname;
         this.id = id;
@@ -34,9 +34,9 @@ public class User {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final User user = (User) o;
-        return id.equals(user.id) && firstName.equalsIgnoreCase(user.firstName) &&
-                surname.equalsIgnoreCase(user.surname);
+        final Person person = (Person) o;
+        return id.equals(person.id) && firstName.equalsIgnoreCase(person.firstName) &&
+                surname.equalsIgnoreCase(person.surname);
     }
 
     @Override
@@ -48,31 +48,31 @@ public class User {
     public String toString() {
         final String sname = Character.toUpperCase(surname.charAt(0)) + surname.substring(1);
         final String fname = Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1);
-        return sname + ", " + fname + " (ID=" + id + ")";
+        return fname + ", " + sname + " (ID=" + id + ")";
     }
 
-    public static Optional<User> apply(final String userText) {
-        final String[] parts = userText.split(",");
+    public static Optional<Person> apply(final String fullName) {
+        final String[] parts = fullName.split(",");
         if(parts.length != 3) {
             return Optional.empty();
         }
-        final User.Builder builder = User.builder();
+        final Person.Builder builder = Person.builder();
         return Optional.of(builder
                 .setId(new BigInteger(parts[0].trim()))
-                .setFirstName(parts[2].trim())
-                .setSurname(parts[1].trim())
+                .setFirstName(parts[1].trim().toLowerCase())
+                .setSurname(parts[2].trim().toLowerCase())
                 .build());
     }
 
     @JsonCreator
-    public static User createUser(
+    public static Person createPerson(
             @JsonProperty("id") String id,
             @JsonProperty("firstName") String firstName,
             @JsonProperty("surname") String surname) {
         return builder()
                 .setId(new BigInteger(id.trim()))
-                .setFirstName(firstName)
-                .setSurname(surname)
+                .setFirstName(firstName.toLowerCase())
+                .setSurname(surname.toLowerCase())
                 .build();
     }
 
@@ -80,14 +80,25 @@ public class User {
         return new Builder();
     }
 
-    public static Builder builder(final User prototype) {
+    public static Builder builder(final Person prototype) {
         return (new Builder()).clone(prototype);
     }
 
     public static class Builder {
-        private BigInteger id;
-        private String firstName;
-        private String surname;
+        private BigInteger id = BigInteger.ZERO;
+        private String firstName = "  ";
+        private String surname = "  ";
+
+        public Builder parse(final String fullName) {
+            final String[] parts = fullName.split(",");
+            if(parts.length > 0) {
+                setFirstName(parts[0].trim());
+            }
+            if(parts.length > 1) {
+                setSurname(parts[1].trim());
+            }
+            return this;
+        }
 
         public Builder setId(final BigInteger id) {
             this.id = id;
@@ -106,15 +117,15 @@ public class User {
             return this;
         }
 
-        public Builder clone(final User other) {
+        public Builder clone(final Person other) {
             this.id = other.id;
             this.firstName = other.firstName;
             this.surname = other.surname;
             return this;
         }
 
-        public User build() {
-            return new User(id, firstName, surname);
+        public Person build() {
+            return new Person(id, firstName, surname);
         }
     }
 }

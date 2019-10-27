@@ -1,11 +1,9 @@
 package console;
 
 import org.anized.umf.app.InputOutput;
-import org.anized.umf.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigInteger;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

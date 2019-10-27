@@ -1,7 +1,12 @@
 <users>
-    <user>
+    <person>
         <id>123456</id>
         <surname>Schmo</surname>
         <firstName>Joe</firstName>
-    </user>
+    </person>
+    <person>
+        <id>123460</id>
+        <surname>Schwachsin</surname>
+        <firstName>Susan</firstName>
+    </person>
 </users>

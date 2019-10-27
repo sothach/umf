@@ -1,4 +1,9 @@
 # UMF
+[![Build Status](https://travis-ci.org/sothach/umf.svg?branch=master)](https://travis-ci.org/sothach/umf)
+[![Coverage Status](https://coveralls.io/repos/github/sothach/umf/badge.svg?branch=master)](https://coveralls.io/github/sothach/umf?branch=master)*
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7fd846368a8e4d539a0154f8ff5a1af4)](https://www.codacy.com/manual/sothach/umf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sothach/umf&amp;utm_campaign=Badge_Grade)
+
+(*) JaCoCo is under-reporting coverage due to it's non-grokking of Java 8 lamdas, IntelliJ reports 88% coverage
 ## Task
 Create a simple command line JAVA application with database access;
 
@@ -27,6 +32,17 @@ Please upload your all or your code & work into Github, Dropbox or Drive etc... 
 
 Please spend no more than 4 hrs on this.
 
+## Assumptions
+*  Person records are unique based on firstname, surname (case insensitive)
+*  Volumes will be low (not using reactive patterns, e.g., for file loading)
+*  i18n is not a requirement (English text only will be used in interface)
+
+## Design decisions
+*  Using Spring-boot CommandLineRunner as application framework
+*  Storage is Mongodb: simple schema-less object store, good Spring support, embedded version facilitates testing
+*  Fasterxml XML parsing library used: contaminates domain object, but considering as person interface context model in 
+this simple application
+
 ## Build me
 `% mvn clean package spring-boot:repackage`
 
@@ -47,8 +63,11 @@ or run in docker:
 ```bash
 > use manifest
 switched to db manifest
-> db.user.find( {} )
-{ "_id" : ObjectId("5db2aa9a67ac350f66fca7b8"), "firstName" : "fred", "surname" : "Flintstone", "_class" : "org.anized.umf.model.User" }
+> db.person.find( {} )
+{ "_id" : "10001", "firstName" : "otto", "surname" : "normalverbraucher", "_class" : "org.anized.umf.model.Person" }
+{ "_id" : "10002", "firstName" : "hans", "surname" : "mustermann", "_class" : "org.anized.umf.model.Person" }
+{ "_id" : "10004", "firstName" : "ivor", "surname" : "driver", "_class" : "org.anized.umf.model.Person" }
+{ "_id" : "1234", "firstName" : "freddy", "surname" : "finkelstein", "_class" : "org.anized.umf.model.Person" }
 ```
 
 ## Build Docker image
