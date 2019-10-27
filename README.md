@@ -32,8 +32,11 @@ Please spend no more than 4 hrs on this.
 
 ## Set-up
 if installed locally, start daemon:
+
 `% mongod`
+
 or run in docker:
+
 `% docker run -d -p 27017:27017 -v ~/data:/data/db mongo1`
 
 ## Run me
