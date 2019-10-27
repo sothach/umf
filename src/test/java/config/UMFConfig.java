@@ -26,7 +26,7 @@ public class UMFConfig {
                     (Objects.requireNonNull(
                             this.getClass().getClassLoader().getResource(filename)).getFile()));
         } catch (final FileNotFoundException e) {
-            throw new RuntimeException(
+            throw new IllegalStateException(
                     "Failed to initialize test, could not read commands from "+filename, e);
         }
     }

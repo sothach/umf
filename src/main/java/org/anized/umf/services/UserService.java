@@ -30,7 +30,7 @@ public class UserService {
                 .build();
         return Try.apply(() -> {
             if (read(canon).isPresent()) {
-                throw new RuntimeException("User already exists: " + canon);
+                throw new IllegalStateException("User already exists: " + canon);
             } else {
                 storage.save(canon);
                 return true;
@@ -49,7 +49,7 @@ public class UserService {
                 storage.save(user);
                 return user;
             } else {
-                throw new RuntimeException("User does not exist: " + user);
+                throw new IllegalStateException("User does not exist: " + user);
             }
         });
     }
@@ -60,7 +60,7 @@ public class UserService {
                 maybeUser.map(User::toString).orElse("<not found>"));
         return Try.apply(() -> {
             if (!maybeUser.isPresent()) {
-                throw new RuntimeException("User does not exist for id=" + userId);
+                throw new IllegalStateException("User does not exist for id=" + userId);
             } else {
                 final User user = maybeUser.get();
                 storage.delete(user);

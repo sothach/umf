@@ -21,7 +21,7 @@ public class DataLoader {
                 final InputStream is = Files.newInputStream(Paths.get(fileName.trim()));
                 return xmlMapper.readValue(is, userListType);
             } catch (final Exception e) {
-                throw new RuntimeException("Failed to read XML user file: "+fileName,e);
+                throw new IllegalStateException("Failed to read XML user file: "+fileName,e);
             }
         });
     }
