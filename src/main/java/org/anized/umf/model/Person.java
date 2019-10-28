@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public class Person {
     @Id
-    private BigInteger id;
-    private String firstName;
-    private String surname;
+    private final BigInteger id;
+    private final String firstName;
+    private final String surname;
 
     private Person(final BigInteger id, final String firstName, final String surname) {
         this.firstName = firstName;
@@ -117,7 +117,7 @@ public class Person {
             return this;
         }
 
-        public Builder clone(final Person other) {
+        Builder clone(final Person other) {
             this.id = other.id;
             this.firstName = other.firstName;
             this.surname = other.surname;

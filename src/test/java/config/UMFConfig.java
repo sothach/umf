@@ -17,8 +17,8 @@ import java.util.Scanner;
 @Profile("test")
 @EnableMongoRepositories("org.anized.umf.persistence")
 public class UMFConfig {
-    private OutputBuffer outputBuffer = new OutputBuffer();
-    private Scanner input = commandFile("console-input.txt");
+    private final OutputBuffer outputBuffer = new OutputBuffer();
+    private final Scanner input = commandFile("console-input.txt");
 
     private Scanner commandFile(final String filename) {
         try {

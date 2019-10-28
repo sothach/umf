@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.util.AssertionErrors.fail;
 
 class TrySpec {
@@ -18,7 +19,7 @@ class TrySpec {
         });
         assertFalse(result.isSuccess());
         result
-            .onFailure(e -> e.getMessage().equals("boom!"))
+            .onFailure(e -> assertEquals(e.getMessage(), "boom!"))
             .onSuccess(res -> fail("operation should not have succeeded"));
     }
 

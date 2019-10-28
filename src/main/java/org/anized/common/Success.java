@@ -3,7 +3,7 @@ package org.anized.common;
 import java.util.function.Consumer;
 
 public class Success<V> implements Try<V> {
-    private V content;
+    private final V content;
 
     public Success(final V content) {
         this.content = content;

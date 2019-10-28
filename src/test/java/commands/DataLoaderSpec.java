@@ -18,9 +18,7 @@ class DataLoaderSpec {
     @DisplayName("Load XML user files")
     void loadXml() {
         DataLoader.loadFromXmlFile(testFile.getAbsolutePath())
-            .onSuccess(users -> {
-                users.forEach(System.out::println);
-            })
+            .onSuccess(users -> users.forEach(System.out::println))
             .onFailure(e -> {
                 e.printStackTrace();
                 fail(e.getMessage());

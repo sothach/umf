@@ -43,5 +43,5 @@ class UserSpec {
         assertFalse(subject.isPresent());
     }
 
-    private Person expected = Person.apply("1, Fred, Flintstone").get();
+    private final Person expected = Person.apply("1, Fred, Flintstone").get();
 }

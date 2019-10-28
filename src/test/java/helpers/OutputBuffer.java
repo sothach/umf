@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OutputBuffer {
-    private ByteArrayOutputStream byteArrayOutputStream
+    private final ByteArrayOutputStream byteArrayOutputStream
             = new ByteArrayOutputStream();
 
     public PrintStream getPrintStream() {

@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class ConsoleInOut implements InputOutput {
-    private Scanner input;
+    private final Scanner input;
     private final PrintStream output;
 
     public ConsoleInOut(final Scanner scanner, final PrintStream output) {

@@ -3,7 +3,7 @@ package org.anized.common;
 import java.util.function.Consumer;
 
 public class Failure<V> implements Try<V> {
-    private Throwable content;
+    private final Throwable content;
 
     public Failure(final Throwable content) {
         this.content = content;

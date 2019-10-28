@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 class CommandLineSpec {
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
@@ -34,15 +34,15 @@ class CommandLineSpec {
     private String getCommandHelp() {
         return help.toString();
     }
-    private Command help =
+    private final Command help =
             new Command("help", "display help",  () -> {
                 console.println(getCommandHelp());
                 return true;
             });
-   private Command quit = new Command( "quit",   "terminate program", () -> false);
+   private final Command quit = new Command( "quit",   "terminate program", () -> false);
 
-   private Optional<String> helpOption = Optional.of("help");
-   private Optional<String> quitOption = Optional.of("quit");
+   private final Optional<String> helpOption = Optional.of("help");
+   private final Optional<String> quitOption = Optional.of("quit");
 
     @Test
     @DisplayName("The command line reads & executes commands")

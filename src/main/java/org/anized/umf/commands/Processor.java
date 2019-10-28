@@ -23,6 +23,9 @@ public class Processor {
     public Processor(final ConfigurableApplicationContext context,
                      final ManifestService manifestService,
                      final InputOutput ioChannel) {
+        assert(context != null);
+        assert(manifestService != null);
+        assert(ioChannel != null);
         this.manifestService = manifestService;
         this.ioChannel = ioChannel;
         commands.add(help)
@@ -34,7 +37,7 @@ public class Processor {
                 .add(new Command("upload", "Load Person manifest from xml file", load))
                 .add(new Command("quit",   "Terminate program", () -> {context.close(); return false;}));
     }
-    private Command help =
+    private final Command help =
                      new Command("help",   "Display command help",  () -> {
                          commands.list().forEach(ioChannel::println);
                          return true;
@@ -44,7 +47,7 @@ public class Processor {
         return input.map(key -> commands.lookup(key).orElse(help));
     }
 
-    private Executor add = () -> {
+    private final Executor add = () -> {
         ioChannel.print("Enter Person (id, firstname, surname): ");
         ioChannel.nextLine().ifPresent( person -> {
             final Optional<Person> maybeNewPerson = Person.apply(person);
@@ -66,27 +69,24 @@ public class Processor {
         return true;
     };
 
-    private Executor list = () -> {
+    private final Executor list = () -> {
         manifestService.findAll().forEach(Person -> ioChannel.println(Person.toString()));
         return true;
     };
 
-    private Executor count = () -> {
+    private final Executor count = () -> {
         ioChannel.println("# Person records=%d", manifestService.count());
         return true;
     };
 
-    private Executor delete = () -> {
+    private final Executor delete = () -> {
         ioChannel.print("Enter Person Id: ");
         ioChannel.nextLine().ifPresent(id -> {
             try {
-                final BigInteger PersonId = new BigInteger(id.trim());
-                final Try<Person> Person = manifestService.delete(PersonId);
-                if (Person.isSuccess()) {
-                    ioChannel.println("deleted Person %d", PersonId);
-                } else {
-                    ioChannel.errorLine("failed to delete Person #" + PersonId);
-                }
+                final BigInteger personId = new BigInteger(id.trim());
+                manifestService.delete(personId)
+                        .onSuccess(person -> ioChannel.println("deleted Person %d", personId))
+                        .onFailure(e -> ioChannel.errorLine("failed to delete Person #" + personId));
             } catch (final NumberFormatException nfe) {
                 ioChannel.errorLine("invalid Person id: %s", id);
             }
@@ -94,50 +94,44 @@ public class Processor {
         return true;
     };
 
-    private Function<Optional<String>,Optional<String>> cleanInput = input -> {
-        return input.map(String::trim).filter(value -> !value.isEmpty());
-    };
+    private final Function<Optional<String>,Optional<String>> cleanInput = input -> input.map(String::trim).filter(value -> !value.isEmpty());
 
-    private Executor edit = () -> {
+    private final Executor edit = () -> {
         ioChannel.print("Enter Person (firstname, surname): ");
-        ioChannel.nextLine().ifPresent(Personname -> {
-           final Person editPerson = Person.builder().parse(Personname).build();
+        ioChannel.nextLine().ifPresent(personname -> {
+           final Person editPerson = Person.builder().parse(personname).build();
            final Optional<Person> maybePerson = manifestService.read(editPerson);
             if (!maybePerson.isPresent()) {
-                ioChannel.errorLine("Person '%s' does not exist", Personname);
+                ioChannel.errorLine("Person '%s' does not exist", personname);
             } else {
                 final Person person = maybePerson.get();
                 final Person.Builder builder = Person.builder(person);
                 ioChannel.print("Enter new firstName (return to use %s): ", person.getFirstName());
                 final Optional<String> firstName = ioChannel.nextLine();
-                if (cleanInput.apply(firstName).isPresent()) {
-                    builder.setFirstName(firstName.get());
-                }
+                cleanInput.apply(firstName).ifPresent(builder::setFirstName);
                 ioChannel.print("Enter new surname (return to use %s): ", person.getSurname());
                 final Optional<String> surname = ioChannel.nextLine();
-                if (cleanInput.apply(surname).isPresent()) {
-                    builder.setSurname(surname.get());
-                }
+                cleanInput.apply(surname).ifPresent(builder::setSurname);
                 manifestService.update(builder.build())
-                    .onSuccess(updated -> {
-                        ioChannel.println("updated Person: %s", updated);
-                    }).onFailure(error ->
+                    .onSuccess(updated ->
+                        ioChannel.println("updated Person: %s", updated))
+                    .onFailure(error ->
                         ioChannel.errorLine("failed to update: %s", person, error.getMessage()));
             }
         });
         return true;
     };
 
-    private Executor load = () -> {
+    private final Executor load = () -> {
         ioChannel.print("Enter path to Person XML file: ");
         ioChannel.nextLine().ifPresent(path ->
-        DataLoader.loadFromXmlFile(path)
-            .onSuccess(PersonList -> {
-                Stream<Try<Boolean>> createdPersons = PersonList.stream().map(Person -> manifestService.create(Person));
-                long success = createdPersons.filter(Try::isSuccess).count();
-                ioChannel.println("loaded %d Person records of %d",success,PersonList.size());
-            }).onFailure(error ->
-                ioChannel.errorLine("failed to load Person records from '%s': %s", path, error.getMessage())));
+                DataLoader.loadFromXmlFile(path)
+                    .onSuccess(personList -> {
+                        final Stream<Try<Boolean>> createdPersons = personList.stream().map(manifestService::create);
+                        final long success = createdPersons.filter(Try::isSuccess).count();
+                        ioChannel.println("loaded %d Person records of %d", success, personList.size());
+                    }).onFailure(error ->
+                        ioChannel.errorLine("failed to load Person records from '%s': %s", path, error.getMessage())));
         return true;
     };
 

@@ -11,8 +11,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class DataLoader {
-    private static XmlMapper xmlMapper = new XmlMapper();
-    private static TypeReference<List<Person>> manifestListType =
+    private static final XmlMapper xmlMapper = new XmlMapper();
+    private static final TypeReference<List<Person>> manifestListType =
             new TypeReference<List<Person>>() {};
 
     public static Try<List<Person>> loadFromXmlFile(final String fileName) {

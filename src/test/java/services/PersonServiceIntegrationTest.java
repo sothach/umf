@@ -32,16 +32,17 @@ class PersonServiceIntegrationTest {
             .build();
 
     @Test
-    @DisplayName("A user record can be persisted via the service")
+    @DisplayName("A person record can be persisted and updated via the service")
     void testCreate() {
         manifestService.create(person);
         final Optional<Person> found = manifestService.read(person);
         assertTrue(found.isPresent());
         found.ifPresent(u -> assertEquals(u, person));
+        manifestService.update(person).onFailure(e -> fail(e.getMessage()));
     }
 
     @Test
-    @DisplayName("Attempts to create a duplicate user will fail")
+    @DisplayName("An attempt to create a duplicate person should fail")
     void testCreateDuplicates() {
         final Person testPerson = Person.builder(person)
                 .setFirstName("Pebbles").build();
@@ -54,7 +55,16 @@ class PersonServiceIntegrationTest {
     }
 
     @Test
-    @DisplayName("A user record can be deleted via the service")
+    @DisplayName("An attempt to update a non-existent person should fail")
+    void testUpdateNonExistent() {
+        final Person testPerson = Person.builder(person)
+                .setId(new BigInteger("17123"))
+                .setFirstName("Dino").build();
+        manifestService.update(testPerson).onSuccess(p -> fail());
+    }
+
+    @Test
+    @DisplayName("A person record can be deleted via the service")
     void testDelete() {
         final Person testPerson = Person.builder(person)
                 .setFirstName("Wilma").build();
@@ -67,6 +77,12 @@ class PersonServiceIntegrationTest {
         });
         final Optional<Person> refind = manifestService.read(testPerson);
         assertFalse(refind.isPresent());
+    }
+
+    @Test
+    @DisplayName("An attempt to delete a non-existent person should fail")
+    void testDeletedNonExistent() {
+        manifestService.delete(new BigInteger("17123")).onSuccess(p -> fail());
     }
 
     @Test

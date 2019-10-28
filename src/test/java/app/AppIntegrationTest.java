@@ -44,7 +44,7 @@ class AppIntegrationTest {
         assertEquals(expectedOutput, outputBuffer.getLines());
     }
 
-    private static List<String> expectedOutput = new ArrayList<>();
+    private static final List<String> expectedOutput = new ArrayList<>();
     static {
         final String red = InputOutput.Red;
         final String reset = InputOutput.Reset;

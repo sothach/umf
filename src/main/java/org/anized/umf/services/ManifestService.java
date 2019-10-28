@@ -14,9 +14,9 @@ import java.util.Optional;
 
 @Service
 public class ManifestService {
-    private static Logger LOGGER =
+    private static final Logger LOGGER =
             LoggerFactory.getLogger(ManifestService.class);
-    private ManifestRepository storage;
+    private final ManifestRepository storage;
 
     @Autowired
     public ManifestService(final ManifestRepository storage) {
@@ -30,6 +30,7 @@ public class ManifestService {
                 .build();
         return Try.apply(() -> {
             if (read(canon).isPresent()) {
+                LOGGER.warn("failed to create Person: {} already exists", person);
                 throw new IllegalStateException("Person already exists: " + canon);
             } else {
                 storage.save(canon);
@@ -37,7 +38,6 @@ public class ManifestService {
             }
         });
     }
-
 
     public Optional<Person> read(final Person person) {
         return findByName(person.getSurname(), person.getFirstName());
@@ -49,6 +49,7 @@ public class ManifestService {
                 storage.save(person);
                 return person;
             } else {
+                LOGGER.warn("failed to update Person: {} does not exist", person);
                 throw new IllegalStateException("Person does not exist: " + person);
             }
         });
@@ -60,6 +61,7 @@ public class ManifestService {
                 maybePerson.map(Person::toString).orElse("<not found>"));
         return Try.apply(() -> {
             if (!maybePerson.isPresent()) {
+                LOGGER.warn("failed to delete Person id={} does not exist", personId);
                 throw new IllegalStateException("Person does not exist for id=" + personId);
             } else {
                 final Person person = maybePerson.get();
@@ -82,7 +84,7 @@ public class ManifestService {
                 surname.trim().toLowerCase(), forename.trim().toLowerCase());
     }
 
-    public Optional<Person> findPersonById(final BigInteger personId) {
+    private Optional<Person> findPersonById(final BigInteger personId) {
         return storage.findById(personId);
     }
 

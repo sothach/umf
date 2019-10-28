@@ -11,9 +11,9 @@ import java.util.Optional;
 
 @Component
 public class CommandLine {
-    private static Logger LOGGER = LoggerFactory.getLogger(CommandLine.class);
-    private InputOutput console;
-    private Processor commandProcessor;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandLine.class);
+    private final InputOutput console;
+    private final Processor commandProcessor;
 
     @Autowired
     public CommandLine(final InputOutput console,

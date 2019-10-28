@@ -1,9 +1,9 @@
 package org.anized.umf.commands;
 
 public class Command {
-    private String name;
-    private String description;
-    private Executor executor;
+    private final String name;
+    private final String description;
+    private final Executor executor;
 
     public Command(final String name, final String description,
                    final Executor executor) {
