@@ -10,8 +10,11 @@ import java.util.stream.Collectors;
 class CommandSet {
     private final Map<String,Command> commands = new HashMap<>();
     private final Function<String,String> normalize = (String comm) -> {
-        assert(comm != null && !comm.isEmpty());
-        return comm.trim().toLowerCase().substring(0, 1);
+        if(comm == null || comm.isEmpty()) {
+            return "?";
+        } else {
+            return comm.trim().toLowerCase().substring(0, 1);
+        }
     };
 
     CommandSet add(final Command command) {

@@ -56,22 +56,22 @@ class AppIntegrationTest {
         expectedOutput.add("upload Load Person manifest from xml file");
         expectedOutput.add("help   Display command help");
         expectedOutput.add("list   List Persons");
-        expectedOutput.add("Enter command ('?' for help): Enter Person (id, firstname, surname): Person 'User, Test (ID=10134)' successfully added");
+        expectedOutput.add("Enter command ('?' for help): Enter Person (id, firstname, surname): Person User, Test (ID=10134) successfully added");
         expectedOutput.add("Enter command ('?' for help): Enter Person (id, firstname, surname): "
-                +red+"Person 'user, test' already exists in manifest with id=10134"+reset);
+                +red+"Person user, test already exists in manifest with id=10134"+reset);
         expectedOutput.add("Enter command ('?' for help): # Person records=1");
         expectedOutput.add("Enter command ('?' for help): Enter Person (firstname, surname): "
-                +red+"Person 'known, not' does not exist"+reset);
+                +red+"Person known, not does not exist"+reset);
         expectedOutput.add("Enter command ('?' for help): Enter Person (firstname, surname): Enter new firstName (return to use user): Enter new surname (return to use test): updated Person: Changed, Name (ID=10134)");
         expectedOutput.add("Enter command ('?' for help): Enter Person (id, firstname, surname): "
-                +red+"invalid Person 'invalid person', please enter: id, firstname, surname"+reset);
+                +red+"invalid Person invalid person, please enter: id, firstname, surname"+reset);
         expectedOutput.add("Enter command ('?' for help): Enter Person (firstname, surname): " +
-                ""+red+"Person 'abcde' does not exist"+reset);
+                ""+red+"Person abcde does not exist"+reset);
         expectedOutput.add("Enter command ('?' for help): Enter Person Id: deleted Person 10134");
         expectedOutput.add("Enter command ('?' for help): Enter Person Id: "+red+"invalid Person id: ABCDE"+reset);
         expectedOutput.add("Enter command ('?' for help): Enter path to Person XML file: loaded 2 Person records of 2");
         expectedOutput.add("Enter command ('?' for help): Enter path to Person XML file: "
-                +red+"failed to load Person records from 'no.such.file': Failed to read XML manifest file: no.such.file"+reset);
+                +red+"failed to load Person records from no.such.file: Failed to read XML manifest file: no.such.file"+reset);
         expectedOutput.add("Enter command ('?' for help): Joe, Schmo (ID=123456)");
         expectedOutput.add("Susan, Schwachsin (ID=123460)");
         expectedOutput.add("Enter command ('?' for help): ");
